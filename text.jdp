@@ -1,21 +1,21 @@
 pipeline {
     agent any
     stages {
-        stage('Pull code') {
+        stage('Pull') {
             steps {
-                git credentialsId: 'gitlab', url: 'https://gitlab.com/prasad-deo/cbz-student-ui.git'
+                git credentialsId: 'tomcat', url: 'https://gitlab.com/prasad-deo/cbz-student-ui.git'
                 sh 'ls'
             }
         }
         stage('Build') {
             steps {
-                echo 'code is building'
-                sh 'mvn clean package'
+                echo 'code is Building'
+                 sh 'mvn clean package'
             }
         }
-        stage('Deploy To Server') {
+        stage('deploy to server') {
             steps {
-                deploy adapters: [tomcat9(credentialsId: 'new', path: '', url: 'http://172.31.12.125:8080')], contextPath: '/', war: '**/*.war'
+             deploy adapters: [tomcat9(credentialsId: 'tomcat', path: '', url: 'http://172.31.37.203:8080')], contextPath: '/', war: '**/*.war'
             }
         }
     }
